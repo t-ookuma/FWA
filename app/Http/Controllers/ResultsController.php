@@ -33,17 +33,19 @@ class ResultsController extends Controller
      */
     public function index(Request $request)
     {
-        $archiveFiscalYearsList = $this->resultService->getArchiveFiscalYearList();
-        $fiscalYear = $this->resultService->getFiscalYear($request->fiscalYear);
-        $wareki = $this->resultService->wareki($fiscalYear);
-        $resultList = $this->resultService->getEditedResultList($fiscalYear);
-
-        return view('results.index')->with([
-            'archiveYears' => $archiveFiscalYearsList,
-            'fiscalYear' => $fiscalYear,
-            'wareki' => $wareki,
-            'resultList' => $resultList
-        ]);
+        if (is_null(Result::all())) {
+            $archiveFiscalYearsList = $this->resultService->getArchiveFiscalYearList();
+            $fiscalYear = $this->resultService->getFiscalYear($request->fiscalYear);
+            $wareki = $this->resultService->wareki($fiscalYear);
+            $resultList = $this->resultService->getEditedResultList($fiscalYear);
+            return view('results.index')->with([
+                'archiveYears' => $archiveFiscalYearsList,
+                'fiscalYear' => $fiscalYear,
+                'wareki' => $wareki,
+                'resultList' => $resultList
+            ]);
+        }
+        return view('results.index');
     }
 
     public function create()
@@ -63,11 +65,15 @@ class ResultsController extends Controller
         ]);
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $this->resultService->createResult($request);
+        return redirect('/results');
     }
 
     public function update($id, Request $request)
     {
+        $this->resultService->updateResult($id, $request);
+        return redirect('/results');
     }
 }

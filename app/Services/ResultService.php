@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Result;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ResultService
 {
@@ -82,5 +83,55 @@ class ResultService
                 return $era['name'] . $year . '年度';
             }
         }
+    }
+
+    /**
+     * @param  Illuminate\Http\Request  $request
+     */
+    public function createResult($request)
+    {
+        DB::beginTransaction();
+        try {
+            $datas = $this->getDatas($request);
+            $result = new Result($datas);
+            $result->save();
+        } catch (Exception $e) {
+            DB::rollback();
+            return back()->withInput();
+        }
+        DB::commit();
+    }
+
+    /**
+     * @param  int  $id
+     * @param  Illuminate\Http\Request  $request
+     */
+    public function updateResult($id, $request)
+    {
+        DB::beginTransaction();
+        try {
+            $datas = $this->getDatas($request);
+            $result = Result::find($id);
+            $result->update($datas);
+        } catch (Exception $e) {
+            DB::rollback();
+            return back()->withInput();
+        }
+        DB::commit();
+    }
+
+    /**
+     * @param  mixed  $file
+     * 
+     * @return  mixed
+     */
+    public function getDatas($request): mixed
+    {
+        $datas = $request->all();
+        $path = $request->file('requirement_path')->store('public/result-requirements');
+        $datas['requirement_path'] = basename($path);
+        $path = $request->file('result_path')->store('public/result-results');
+        $datas['result_path'] = basename($path);
+        return $datas;
     }
 }

@@ -1,6 +1,7 @@
 <x-layout.layout float="apply">
     <!-- main -->
     <section>
+        @isset($archiveYears)
         <div class="min-h-[2500px] flex">
             <div class="w-5/6 pc:w-full">
                 <div class="mt-32 ml-[10.6%] mb-6 s-pc:ml-[5.6%] pc-sp:ml-3">
@@ -75,5 +76,13 @@
                 </div>
             </div>
         </div>
+        @else
+        <div class="flex justify-center mt-[150px]">
+            <div class="text-center text-7xl">
+                <div class=""><strong>只今、準備中です。</strong></div>
+                <div class=""><strong>公開までお待ちください。</strong></div>
+            </div>
+        </div>
+        @endisset
     </section>
 </x-layout.layout>
