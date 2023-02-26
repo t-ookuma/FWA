@@ -45,6 +45,7 @@ class NewsForm extends FormRequest
     public function attributes()
     {
         return [
+            'category' => 'カテゴリー',
             'title' => 'タイトル',
             'noticed_at' => 'お知らせ日',
             'note' => '注意書き',
