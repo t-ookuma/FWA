@@ -39,7 +39,7 @@ class ResultForm extends FormRequest
             'started_at' => '開催日：開始日',
             'ended_at' => '開催日：終了日',
             'name' => '大会名',
-            'venue' => '開催日',
+            'venue' => '開催地',
             'requirement_path' => '大会要項URL',
             'result_path' => '大会結果URL',
         ];
